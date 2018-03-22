@@ -1,9 +1,7 @@
 {
   "profiles": {
     "Dipsy.VeracodeReport.Converter": {
-      "commandName": "Project",
-      "commandLineArgs": "-i C:\\Users\\marcu\\Downloads\\drp\\1\\1.xml",
-      "workingDirectory": "C:\\Users\\marcu\\Downloads\\drp\\1\\"
+      "commandName": "Project"
     }
   }
 }
