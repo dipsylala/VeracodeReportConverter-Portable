@@ -9,14 +9,14 @@ namespace Dipsy.VeracodeReport.Converter
 {
     public class CSVFlawWriter : ICSVFlawWriter
     {
-        private readonly ICSVFormatter _csvFormatter;
+        private readonly ICSVFormatter csvFormatter;
 
-        private Dictionary<int, string> _severityCache;
+        private Dictionary<int, string> severityCache;
 
         public CSVFlawWriter(ICSVFormatter csvFormatter)
         {
-            _csvFormatter = csvFormatter;
-            PopulateSeverityCache();
+            this.csvFormatter = csvFormatter;
+            this.PopulateSeverityCache();
         }
 
         public void Write(detailedreport detailedXml, string outputFilename, bool includeFixed)
@@ -33,33 +33,47 @@ namespace Dipsy.VeracodeReport.Converter
 
             using (var outFile = new StreamWriter(outputFilename, false, Encoding.UTF8))
             {
-                WriteHeader(outFile);
+                this.WriteHeader(outFile);
                 foreach (var severity in detailedXml.severity)
                 {
                     foreach (var category in severity.category)
                     {
                         foreach (var cwe in category.cwe)
                         {
-                            WriteFlawsToFile(cwe.staticflaws, outFile, includeFixed);
-                            WriteFlawsToFile(cwe.dynamicflaws, outFile, includeFixed);
-                            WriteFlawsToFile(cwe.manualflaws, outFile, includeFixed);
+                            this.WriteFlawsToFile(cwe.staticflaws, outFile, includeFixed);
+                            this.WriteFlawsToFile(cwe.dynamicflaws, outFile, includeFixed);
+                            this.WriteFlawsToFile(cwe.manualflaws, outFile, includeFixed);
                         }
                     }
                 }
             }
         }
 
-        private void WriteFlawsToFile(List<FlawType> flaws, StreamWriter outFile, bool includeFixed)
+        private static string FormatExploitabilityAdjustments(IEnumerable<ExploitAdjustmentType> flawExploitabilityAdjustments)
         {
-            foreach (var flaw in flaws.Where(x=>includeFixed || x.remediation_status!="Fixed"))
+            const string AdjustmentSeparator = "---------\n";
+
+            return string.Join(AdjustmentSeparator, flawExploitabilityAdjustments.Select(x => $"Adjustment: {x.score_adjustment}, Note: {x.note}"));
+        }
+
+        private static string FormatMitigations(IEnumerable<MitigationType> mitigations)
+        {
+            const string MitigationSeparator = "---------\n";
+
+            return string.Join(MitigationSeparator, mitigations.Select(x => $"{x.date} ({x.user}) - {x.action}\n{x.description.TrimEnd('\n')}\n"));
+        }
+
+        private void WriteFlawsToFile(IEnumerable<FlawType> flaws, StreamWriter outFile, bool includeFixed)
+        {
+            foreach (var flaw in flaws.Where(x => includeFixed || x.remediation_status != "Fixed"))
             {
-                WriteFlawToFile(flaw, outFile);
+                this.WriteFlawToFile(flaw, outFile);
             }
         }
 
         private void WriteHeader(TextWriter outFile)
         {
-            var csvLine = _csvFormatter.FormatLine(new List<string>
+            var csvLine = this.csvFormatter.FormatLine(new List<string>
             {
                 "Flaw ID",
                 "CWE ID",
@@ -93,49 +107,39 @@ namespace Dipsy.VeracodeReport.Converter
         {
             var mitigations = FormatMitigations(flaw.mitigations);
             var exploitabilityAdjustments = FormatExploitabilityAdjustments(flaw.exploitability_adjustments);
-            var severity = SeverityStringFromNum(flaw.severity);
+            var severity = this.SeverityStringFromNum(flaw.severity);
 
-            var csvLine = _csvFormatter.FormatLine(new List<string>
-            {
-                flaw.issueid,
-                flaw.cweid,
-                flaw.categoryname,
-                flaw.description,
-                flaw.affects_policy_compliance ? "True": "False",
-                flaw.exploit_desc,
-                flaw.severity_desc,
-                flaw.remediation_desc,
-                flaw.date_first_occurrence,
-                flaw.module,
-                flaw.sourcefile,
-                flaw.sourcefilepath,
-                flaw.functionprototype,
-                flaw.line,
-                flaw.functionrelativelocation == "-1"?string.Empty:flaw.functionrelativelocation,
-                flaw.scope,
-                severity,
-                exploitabilityAdjustments,
-                flaw.grace_period_expires,
-                flaw.remediation_status,
-                flaw.mitigation_status,
-                flaw.mitigation_status_desc,
-                mitigations});
+            var csvLine = this.csvFormatter.FormatLine(
+                new List<string>
+                    {
+                        flaw.issueid,
+                        flaw.cweid,
+                        flaw.categoryname,
+                        flaw.description,
+                        flaw.affects_policy_compliance ? "True" : "False",
+                        flaw.exploit_desc,
+                        flaw.severity_desc,
+                        flaw.remediation_desc,
+                        flaw.date_first_occurrence,
+                        flaw.module,
+                        flaw.sourcefile,
+                        flaw.sourcefilepath,
+                        flaw.functionprototype,
+                        flaw.line,
+                        flaw.functionrelativelocation == "-1"
+                            ? string.Empty
+                            : flaw.functionrelativelocation,
+                        flaw.scope,
+                        severity,
+                        exploitabilityAdjustments,
+                        flaw.grace_period_expires,
+                        flaw.remediation_status,
+                        flaw.mitigation_status,
+                        flaw.mitigation_status_desc,
+                        mitigations
+                    });
 
             outFile.WriteLine(csvLine);
-        }
-
-        private static string FormatExploitabilityAdjustments(List<ExploitAdjustmentType> flawExploitabilityAdjustments)
-        {
-            const string adjustmentSeparator = "---------\n";
-
-            return string.Join(adjustmentSeparator, flawExploitabilityAdjustments.Select(x => $"Adjustment: {x.score_adjustment}, Note: {x.note}"));
-        }
-
-        private static string FormatMitigations(IEnumerable<MitigationType> mitigations)
-        {
-            const string mitigationSeparator = "---------\n";
-
-            return string.Join(mitigationSeparator, mitigations.Select(x => $"{x.date} ({x.user}) - {x.action}\n{x.description.TrimEnd('\n')}\n"));
         }
 
         private string SeverityStringFromNum(string severity)
@@ -145,19 +149,19 @@ namespace Dipsy.VeracodeReport.Converter
                 throw new ArgumentOutOfRangeException(nameof(severity));
             }
 
-            return _severityCache[severityId];
+            return this.severityCache[severityId];
         }
 
         private void PopulateSeverityCache()
         {
-            _severityCache = new Dictionary<int, string>
+            this.severityCache = new Dictionary<int, string>
             {
-                {0, "0 - Informational"},
-                {1, "1 - Very Low"},
-                {2, "2 - Low"},
-                {3, "3 - Medium"},
-                {4, "4 - High"},
-                {5, "5 - Very High"}
+                { 0, "0 - Informational" },
+                { 1, "1 - Very Low" },
+                { 2, "2 - Low" },
+                { 3, "3 - Medium" },
+                { 4, "4 - High" },
+                { 5, "5 - Very High" }
             };
         }
     }

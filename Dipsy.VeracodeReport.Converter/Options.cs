@@ -4,7 +4,7 @@ namespace Dipsy.VeracodeReport.Converter
 {
     public class Options
     {
-        [Option('i', "input", Required=true, HelpText="Detailed XML file to be processed")]
+        [Option('i', "input", Required = true, HelpText = "Detailed XML file to be processed")]
         public string InputFileName { get; set; }
 
         [Option('o', "output", Required = false, HelpText = "Output filename")]
