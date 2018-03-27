@@ -13,6 +13,7 @@ The standalone release is as an exe but contains the whole Runtime as well, henc
 * -i, --input     Required. Detailed XML file to be processed
 * -o, --output    Output filename
 * -f, --fixed     Include fixed flaws in the output
+* -s, --sca       Generate Software Composition Analysis report
 * --help          Display this help screen.
 * --version       Display version information.
 
@@ -20,4 +21,4 @@ The standalone release is as an exe but contains the whole Runtime as well, henc
 
 ``` dotnet Dipsy.VeracodeReport.Converter.dll -i LoadValidFileTest.xml```
 
-```dotnet Dipsy.VeracodeReport.Converter.dll -i LoadValidFileTest.xml -o myoutput.csv```
+``` dotnet Dipsy.VeracodeReport.Converter.dll -i LoadValidFileTest.xml -o myoutput.csv```

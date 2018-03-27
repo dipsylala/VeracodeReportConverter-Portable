@@ -4,7 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <RootNamespace>Dipsy.VeracodeReport.Converter</RootNamespace>
-    <Version>0.99</Version>
+    <Version>1.0</Version>
     <PackageProjectUrl></PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/dipsylala/VeracodeReportConverter/blob/master/LICENSE</PackageLicenseUrl>
     <RepositoryUrl>https://github.com/dipsylala/VeracodeReportConverter</RepositoryUrl>

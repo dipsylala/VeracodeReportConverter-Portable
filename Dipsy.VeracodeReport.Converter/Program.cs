@@ -16,15 +16,24 @@ namespace Dipsy.VeracodeReport.Converter
         {
             ILoader loader = new Loader();
             ICSVFormatter csvFormatter = new CSVFormatter();
-            ICSVFlawWriter icsvWriter = new CSVFlawWriter(csvFormatter);
 
             try
             {
                 var detailedXml = loader.Parse(options.InputFileName);
 
-                var outputFileName = options.OutputFileName ?? detailedXml.app_name + ".csv";
+                var outputFileName = options.OutputFileName
+                                     ?? detailedXml.app_name + (options.GenerateSCA ? "_sca" : string.Empty) + ".csv";
 
-                icsvWriter.Write(detailedXml, outputFileName, options.IncludeFixedFlaws);
+                if (options.GenerateSCA)
+                {
+                    ICSVAnalysisWriter icsvWriter = new CSVAnalysisWriter(csvFormatter);
+                    icsvWriter.Write(detailedXml, outputFileName);
+                }
+                else
+                {
+                    ICSVFlawWriter icsvWriter = new CSVFlawWriter(csvFormatter);
+                    icsvWriter.Write(detailedXml, outputFileName, options.IncludeFixedFlaws);
+                }
             }
             catch (FileNotFoundException)
             {
