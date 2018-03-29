@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.6.1" />
+    <PackageReference Include="Moq" Version="4.8.2" />
     <PackageReference Include="MSTest.TestAdapter" Version="1.2.0" />
     <PackageReference Include="MSTest.TestFramework" Version="1.2.0" />
     <PackageReference Include="Shouldly" Version="3.0.0" />
@@ -18,10 +19,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="xsd\LoadInvalidFileTest.xml">
+    <None Update="xml\LoadInvalidFileTest.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="xsd\LoadValidFileTest.xml">
+    <None Update="xml\LoadValidFileTest.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="xml\LoadValidStaticFileTest.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="xml\LoadValidStaticFileWithSCATest.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

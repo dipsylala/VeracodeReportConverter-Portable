@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<detailedreport xmlns:xsi="http&#x3a;&#x2f;&#x2f;www.w3.org&#x2f;2001&#x2f;XMLSchema-instance" xmlns="https&#x3a;&#x2f;&#x2f;www.veracode.com&#x2f;schema&#x2f;reports&#x2f;export&#x2f;1.0" xsi:schemaLocation="https&#x3a;&#x2f;&#x2f;www.veracode.com&#x2f;schema&#x2f;reports&#x2f;export&#x2f;1.0 https&#x3a;&#x2f;&#x2f;analysiscenter.veracode.com&#x2f;resource&#x2f;detailedreport.xsd" report_format_version="1.5" app_name="Encoding Test" app_id="405364" first_build_submitted_date="2018-03-02 16&#x3a;51&#x3a;06 UTC" version="7 Mar 2018 Static &#x28;2&#x29;" build_id="2066242" submitter="Veracode" platform="Not Specified" assurance_level="5" business_criticality="5" generation_date="2018-03-18 16&#x3a;13&#x3a;34 UTC" veracode_level="VL3" total_flaws="5" flaws_not_mitigated="5" teams="" life_cycle_stage="Not Specified" planned_deployment_date="2018-03-02 16&#x3a;42&#x3a;48 UTC" last_update_time="2018-03-07 10&#x3a;15&#x3a;59 UTC" is_latest_build="true" policy_name="Veracode Recommended Very High" policy_version="1" policy_compliance_status="Did Not Pass" policy_rules_status="Did Not Pass" grace_period_expired="true" scan_overdue="false" business_owner="" business_unit="Not Specified" tags="" legacy_scan_engine="false">
+  <static-analysis rating="B" score="98" submitted_date="2018-03-07 10&#x3a;09&#x3a;05 UTC" published_date="2018-03-07 10&#x3a;15&#x3a;52 UTC" version="7 Mar 2018 Static &#x28;2&#x29;" next_scan_due="2018-06-07 09&#x3a;15&#x3a;52 UTC" analysis_size_bytes="7680" engine_version="120233">
+      <modules>
+         <module name="HtmlDecode.dll" compiler="MSIL_MSVC14_X86" os="Win32" architecture="CIL32" loc="64" score="98" numflawssev0="0" numflawssev1="0" numflawssev2="0" numflawssev3="5" numflawssev4="0" numflawssev5="0"/>
+      </modules>
+   </static-analysis>
+   <severity level="5"/>
+   <severity level="4"/>
+   <severity level="3"/>
+   <severity level="2"/>
+   <severity level="1"/>
+   <severity level="0"/>
+   <flaw-status new="3" reopen="0" open="2" cannot-reproduce="0" fixed="0" total="5" not_mitigated="5" sev-1-change="0" sev-2-change="0" sev-3-change="3" sev-4-change="0" sev-5-change="0"/>
+   <customfields>
+   </customfields>
+  <software_composition_analysis third_party_components="14" violate_policy="false" components_violated_policy="0">
+    <vulnerable_components>
+      <component file_name="testone.jar" sha1="2c034740b8f78c1081af25c0173fc57317d2783a" vulnerabilities="0" max_cvss_score="" version="4.0.6" library="servlet" vendor="tomcat" description="" added_date="2017-08-29 15&#x3a;00&#x3a;44 UTC" new="false" component_affects_policy_compliance="false">
+        <file_paths>
+          <file_path value="testone.jar"/>
+        </file_paths>
+        <licenses>
+          <license name="MIT License" spdx_id="MIT" license_url="http&#x3a;&#x2f;&#x2f;opensource.org&#x2f;licenses&#x2f;MIT" risk_rating="2"/>
+        </licenses>
+        <vulnerabilities/>
+        <violated_policy_rules/>
+      </component>
+      <component file_name="testtwo.jar" sha1="94a9de681a42d0352b3ad22659f67835e560d107" vulnerabilities="2" max_cvss_score="5.8" version="1.4" library="axis" vendor="org.apache.axis" description="" added_date="2017-08-29 15&#x3a;00&#x3a;44 UTC" new="false" component_affects_policy_compliance="false">
+        <file_paths>
+          <file_path value="testtwo.jar"/>
+        </file_paths>
+        <licenses>
+          <license name="Apache License 2.0" spdx_id="Apache-2.0" license_url="http&#x3a;&#x2f;&#x2f;opensource.org&#x2f;licenses&#x2f;Apache-2.0" risk_rating="2"/>
+        </licenses>
+        <vulnerabilities>
+          <vulnerability cve_id="CVE-2012-5784" cvss_score="5.8" severity="3" cwe_id="CWE-20" cve_summary="Apache Axis 1.4 and earlier, as used in PayPal Payments Pro, PayPal Mass Pay, PayPal Transactional Information SOAP, the Java Message Service implementation in Apache ActiveMQ, and other products, does not verify that the server hostname matches a domain name in the subject&#x27;s Common Name &#x28;CN&#x29; or subjectAltName field of the X.509 certificate, which allows man-in-the-middle attackers to spoof SSL servers via an arbitrary valid certificate." severity_desc="Medium" mitigation="false" vulnerability_affects_policy_compliance="false"/>
+          <vulnerability cve_id="CVE-2014-3596" cvss_score="5.8" severity="3" cwe_id="" cve_summary="The getCN function in Apache Axis 1.4 and earlier does not properly verify that the server hostname matches a domain name in the subject&#x27;s Common Name &#x28;CN&#x29; or subjectAltName field of the X.509 certificate, which allows man-in-the-middle attackers to spoof SSL servers via a certificate with a subject that specifies a common name in a field that is not the CN field.  NOTE&#x3a; this issue exists because of an incomplete fix for CVE-2012-5784." severity_desc="Medium" mitigation="false" vulnerability_affects_policy_compliance="false"/>
+        </vulnerabilities>
+        <violated_policy_rules/>
+      </component>
+    </vulnerable_components>
+  </software_composition_analysis>
+</detailedreport>

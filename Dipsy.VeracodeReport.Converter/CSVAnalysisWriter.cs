@@ -3,51 +3,42 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+
+using Dipsy.VeracodeReport.Converter.Interfaces;
 using Dipsy.VeracodeReport.Converter.Schema;
 
 namespace Dipsy.VeracodeReport.Converter
 {
-    public class CSVAnalysisWriter : ICSVAnalysisWriter
+    public class CSVAnalysisWriter : CSVWriterBase, ICSVWriter
     {
-        private readonly ICSVFormatter csvFormatter;
-
-        public CSVAnalysisWriter(ICSVFormatter csvFormatter)
+        public CSVAnalysisWriter(ICSVFormatter csvFormatter) : base(csvFormatter)
         {
-            this.csvFormatter = csvFormatter;
         }
 
-        public void Write(detailedreport detailedXml, string outputFilename)
+        public void Write(TextWriter outFile, detailedreport detailedXml, Options options)
         {
-            if (detailedXml == null)
-            {
-                throw new ArgumentNullException(nameof(detailedXml));
-            }
-
-            if (outputFilename == null)
-            {
-                throw new ArgumentNullException(nameof(outputFilename));
-            }
-
-            using (var outFile = new StreamWriter(outputFilename, false, Encoding.UTF8))
-            {
-                this.Write(outFile, detailedXml);
-            }
+            ValidateWriteParameters(outFile, detailedXml, options);
+            WriteHeader(outFile);
+            WriteComponents(detailedXml.software_composition_analysis.vulnerable_components, outFile);
         }
 
-        public void Write(TextWriter outFile, detailedreport detailedXml)
+        public string GetOutputFilename(detailedreport detailedXml, Options options)
         {
-            // Separated so that we can mock the Writer (and caller might have their own TextWriter derivative)
-            this.WriteHeader(outFile);
-            this.WriteComponentsToFile(detailedXml.software_composition_analysis.vulnerable_components, outFile);
+            var baseFilename = options.OutputFileName ?? detailedXml.app_name + ".csv";
+
+            // If we're generating flaws and SCA, add _sca
+            var newFilename = Path.GetFileNameWithoutExtension(baseFilename) + "_sca"
+                                                                             + Path.GetExtension(
+                                                                                 baseFilename);
+            return Path.Combine(Path.GetDirectoryName(baseFilename), newFilename);
         }
 
-        private static string FormatVulnerabilities(IEnumerable<Vulnerability> vulnerabilities, int severity)
+        private string FormatVulnerabilities(IEnumerable<Vulnerability> vulnerabilities, int severity)
         {
-            const string VulnerabilitySeparator = "---------\n";
             var severityString = Convert.ToString(severity);
 
             return string.Join(
-                VulnerabilitySeparator,
+                DefaultMultilineSeparator,
                 vulnerabilities.Where(x => x.severity == severityString).Select(x => string.Format(
                     "CWE: {0}, CVE: {1}. Summary: {2}",
                     x.cwe_id == string.Empty ? "N/A" : x.cwe_id,
@@ -55,17 +46,17 @@ namespace Dipsy.VeracodeReport.Converter
                     x.cve_summary == string.Empty ? "N/A" : x.cve_summary)));
         }
 
-        private void WriteComponentsToFile(IEnumerable<Component> components, TextWriter outFile)
+        private void WriteComponents(IEnumerable<Component> components, TextWriter outFile)
         {
             foreach (var component in components)
             {
-                this.WriteComponentToFile(component, outFile);
+                WriteComponentToFile(component, outFile);
             }
         }
 
         private void WriteHeader(TextWriter outFile)
         {
-            var csvLine = this.csvFormatter.FormatLine(new List<string>
+            var csvLine = CSVFormatter.FormatLine(new List<string>
             {
                 "Library",
                 "Version",
@@ -88,11 +79,11 @@ namespace Dipsy.VeracodeReport.Converter
 
         private void WriteComponentToFile(Component component, TextWriter outFile)
         {
-            var filePaths = this.FormatFilePaths(component.file_paths);
-            var licenses = this.FormatLicenses(component.licenses);
-            var violatedPolicyRules = this.FormatViolatedPolicyRules(component.violated_policy_rules);
+            var filePaths = FormatFilePaths(component.file_paths);
+            var licenses = FormatLicenses(component.licenses);
+            var violatedPolicyRules = FormatViolatedPolicyRules(component.violated_policy_rules);
 
-            var csvLine = this.csvFormatter.FormatLine(
+            var csvLine = CSVFormatter.FormatLine(
                 new List<string>
                     {
                         component.library,
@@ -116,23 +107,17 @@ namespace Dipsy.VeracodeReport.Converter
 
         private string FormatViolatedPolicyRules(IEnumerable<PolicyRule> componentViolatedPolicyRules)
         {
-            const string ViolationSeparator = "\n";
-
-            return string.Join(ViolationSeparator, componentViolatedPolicyRules.Select(x => x.desc));
+            return string.Join("\n", componentViolatedPolicyRules.Select(x => x.desc));
         }
 
         private string FormatLicenses(IEnumerable<License> componentLicenses)
         {
-            const string FilePathSeparator = "\n";
-
-            return string.Join(FilePathSeparator, componentLicenses.Select(x => $"Name: {x.name}, URL: {x.license_url}"));
+            return string.Join("\n", componentLicenses.Select(x => $"Name: {x.name}, URL: {x.license_url}"));
         }
 
         private string FormatFilePaths(IEnumerable<FilePath> componentFilePaths)
         {
-            const string FilePathSeparator = "\n";
-
-            return string.Join(FilePathSeparator, componentFilePaths.Select(x => x.value));
+            return string.Join("\n", componentFilePaths.Select(x => x.value));
         }
     }
 }

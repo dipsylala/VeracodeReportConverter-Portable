@@ -13,7 +13,7 @@ namespace Dipsy.VeracodeReport.Converter
         [Option('f', "fixed", Required = false, HelpText = "Include fixed flaws in the output")]
         public bool IncludeFixedFlaws { get; set; }
 
-        [Option('s', "sca", Required = false, HelpText = "Generate Software Composition Analysis report")]
-        public bool GenerateSCA { get; set; }
+        [Option('s', "sca", Required = false, HelpText = "Generate Additional Software Composition Analysis report")]
+        public bool GenerateAnalysis { get; set; }
     }
 }

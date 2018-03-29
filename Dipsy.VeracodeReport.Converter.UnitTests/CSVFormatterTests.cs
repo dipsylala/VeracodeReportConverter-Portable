@@ -81,5 +81,19 @@ namespace Dipsy.VeracodeReport.Converter.UnitTests
 
             result.ShouldBe("value a,value b,value c,\"value d\rvalue e\rvalue f\"");
         }
+
+        [TestMethod]
+        public void NullValuesShouldBeEmptyStrings()
+        {
+            var sut = new CSVFormatter();
+            var result = sut.FormatLine(new List<string>
+                                            {
+                                                "value a",
+                                                null,
+                                                "value c"
+                                            });
+
+            result.ShouldBe("value a,,value c");
+        }
     }
 }

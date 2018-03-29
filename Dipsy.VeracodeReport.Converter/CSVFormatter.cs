@@ -2,6 +2,8 @@
 
 namespace Dipsy.VeracodeReport.Converter
 {
+    using Dipsy.VeracodeReport.Converter.Interfaces;
+
     public sealed class CSVFormatter : ICSVFormatter
     {
         public string FormatLine(IEnumerable<string> values)
