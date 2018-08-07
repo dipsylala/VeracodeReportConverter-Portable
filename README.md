@@ -1,5 +1,46 @@
 # Veracode Report Converter
-Takes a detailed xml report from the Veracode platform and generates a CSV file containing typical fields that are useful in day-to-day reporting.
+Takes a detailed xml report from the Veracode platform and generates a CSV file containing typical fields that are useful in day-to-day reporting:
+
+                Flaw ID
+                CWE ID
+                Category Name
+                Description
+                Affects Policy Compliance
+                Exploit (Manual)
+                Severity (Manual)
+                Remediation (Manual)
+                Date First Occurrence
+                Module
+                Source File
+                Source File Path
+                Function Prototype
+                Line
+                Function Relative Location (%)
+                Scope
+                Severity
+                Exploitability Adjustments
+                Grace Period Expires
+                Remediation Status
+                Mitigation Status
+                Mitigation Status Description
+                Mitigation Text
+
+It can also optionally output SCA details into another file:
+
+                Library
+                Version
+                Vendor
+                Description
+                File Paths
+                Licenses
+                Max CVSS Score
+                Affects Policy Compliance
+                Violated Policy Rules
+                Vulnerabilities (Very Low)
+                Vulnerabilities (Low)
+                Vulnerabilities (Medium)
+                Vulnerabilities (High)
+                Vulnerabilities (Very High)
 
 The Veracode Help Center provides guidance on how to retrieve the detailed xml report here: https://help.veracode.com/reader/DGHxSJy3Gn3gtuSIN2jkRQ/wtJ0ZMLZcYuRd22PmK5vxg
 
