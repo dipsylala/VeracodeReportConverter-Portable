@@ -44,7 +44,8 @@ It can also optionally output SCA details into another file:
 
 The Veracode Help Center provides guidance on how to retrieve the detailed xml report here: https://help.veracode.com/reader/DGHxSJy3Gn3gtuSIN2jkRQ/wtJ0ZMLZcYuRd22PmK5vxg
 
-If you don't want the standalone version, you need .NET Core Runtime 2 - available here for your OS: https://www.microsoft.com/net/download/Windows/run
+If you don't want the standalone version, you need .NET Core Runtime 2 - available here for your OS: 
+https://dotnet.microsoft.com/download/dotnet-core
 
 The standalone release is as an exe but contains the whole Runtime as well, hence the size.
 
