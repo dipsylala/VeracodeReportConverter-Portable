@@ -57,11 +57,9 @@ namespace Dipsy.VeracodeReport.Converter.UnitTests
             var options = new Options { OutputFileName = "output.csv" };
             var sut = new CSVAnalysisWriter(mockFormatter.Object);
 
-            using (var resultStream = new MemoryStream())
-            using (var resultWriter = new StreamWriter(resultStream))
-            {
-                Should.Throw<ArgumentNullException>(() => sut.Write(resultWriter, null, options));
-            }
+            using var resultStream = new MemoryStream();
+            using var resultWriter = new StreamWriter(resultStream);
+            Should.Throw<ArgumentNullException>(() => sut.Write(resultWriter, null, options));
         }
 
         [TestMethod]
@@ -71,11 +69,9 @@ namespace Dipsy.VeracodeReport.Converter.UnitTests
             var detailedReport = new detailedreport();
             var sut = new CSVAnalysisWriter(mockFormatter.Object);
 
-            using (var resultStream = new MemoryStream())
-            using (var resultWriter = new StreamWriter(resultStream))
-            {
-                Should.Throw<ArgumentNullException>(() => sut.Write(resultWriter, detailedReport, null));
-            }
+            using var resultStream = new MemoryStream();
+            using var resultWriter = new StreamWriter(resultStream);
+            Should.Throw<ArgumentNullException>(() => sut.Write(resultWriter, detailedReport, null));
         }
 
         [TestMethod, DeploymentItem("./xml/LoadValidStaticFileWithSCATest.xml")]
