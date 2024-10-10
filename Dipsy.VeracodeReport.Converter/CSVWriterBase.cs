@@ -20,20 +20,11 @@ namespace Dipsy.VeracodeReport.Converter
 
         protected void ValidateWriteParameters(TextWriter outFile, detailedreport detailedXml, Options options)
         {
-            if (outFile == null)
-            {
-                throw new ArgumentNullException(nameof(outFile));
-            }
+            ArgumentNullException.ThrowIfNull(outFile);
 
-            if (detailedXml == null)
-            {
-                throw new ArgumentNullException(nameof(detailedXml));
-            }
+            ArgumentNullException.ThrowIfNull(detailedXml);
 
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
+            ArgumentNullException.ThrowIfNull(options);
         }
     }
 }

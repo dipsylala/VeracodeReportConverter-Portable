@@ -81,7 +81,7 @@ namespace Dipsy.VeracodeReport.Converter.UnitTests
         [TestMethod, DeploymentItem("./xml/LoadValidStaticFileTest.xml")]
         public void ShouldLoadStaticResults()
         {
-            var detailedReport = detailedreport.LoadFromFile("./xml/LoadValidStaticFileTest.xml");
+            var detailedReport = detailedreport.LoadFromFile("./LoadValidStaticFileTest.xml");
             var options = new Options
                               {
                                   IncludeFixedFlaws = false
@@ -97,7 +97,7 @@ namespace Dipsy.VeracodeReport.Converter.UnitTests
             }
 
             // 1 for header, 5 for static results
-            mockFormatter.Verify(x => x.FormatLine(It.IsAny<List<string>>()), Times.Exactly(6));
+            mockFormatter.Verify(x => x.FormatLine(It.IsAny<IEnumerable<string>>()), Times.Exactly(6));
         }
     }
 }

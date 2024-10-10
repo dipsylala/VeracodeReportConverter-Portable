@@ -2,19 +2,14 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 using Dipsy.VeracodeReport.Converter.Interfaces;
 using Dipsy.VeracodeReport.Converter.Schema;
 
 namespace Dipsy.VeracodeReport.Converter
 {
-    public class CSVAnalysisWriter : CSVWriterBase, ICSVWriter
+    public class CSVAnalysisWriter(ICSVFormatter csvFormatter) : CSVWriterBase(csvFormatter), ICSVWriter
     {
-        public CSVAnalysisWriter(ICSVFormatter csvFormatter) : base(csvFormatter)
-        {
-        }
-
         public void Write(TextWriter outFile, detailedreport detailedXml, Options options)
         {
             ValidateWriteParameters(outFile, detailedXml, options);
@@ -84,8 +79,7 @@ namespace Dipsy.VeracodeReport.Converter
             var violatedPolicyRules = FormatViolatedPolicyRules(component.violated_policy_rules);
 
             var csvLine = CSVFormatter.FormatLine(
-                new List<string>
-                    {
+                [
                         component.library,
                         component.version,
                         component.vendor,
@@ -100,7 +94,7 @@ namespace Dipsy.VeracodeReport.Converter
                         FormatVulnerabilities(component.vulnerabilities, 3),
                         FormatVulnerabilities(component.vulnerabilities, 4),
                         FormatVulnerabilities(component.vulnerabilities, 5)
-                    });
+                    ]);
 
             outFile.WriteLine(csvLine);
         }

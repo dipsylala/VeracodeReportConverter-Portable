@@ -77,7 +77,7 @@ namespace Dipsy.VeracodeReport.Converter.UnitTests
         [TestMethod, DeploymentItem("./xml/LoadValidStaticFileWithSCATest.xml")]
         public void ShouldLoadStaticResultsWithSCA()
         {
-            var detailedReport = detailedreport.LoadFromFile("./xml/LoadValidStaticFileWithSCATest.xml");
+            var detailedReport = detailedreport.LoadFromFile("./LoadValidStaticFileWithSCATest.xml");
             var mockFormatter = new Mock<ICSVFormatter>();
             var options = new Options { GenerateAnalysis = true };
 
@@ -90,7 +90,7 @@ namespace Dipsy.VeracodeReport.Converter.UnitTests
             }
 
             // 1 for header, 2 for sca results
-            mockFormatter.Verify(x => x.FormatLine(It.IsAny<List<string>>()), Times.Exactly(3));
+            mockFormatter.Verify(x => x.FormatLine(It.IsAny<IEnumerable<string>>()), Times.Exactly(3));
         }
     }
 }

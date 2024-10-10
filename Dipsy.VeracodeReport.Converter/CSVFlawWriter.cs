@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 using Dipsy.VeracodeReport.Converter.Interfaces;
 using Dipsy.VeracodeReport.Converter.Schema;
@@ -64,8 +63,8 @@ namespace Dipsy.VeracodeReport.Converter
 
         private void WriteHeader(TextWriter outFile)
         {
-            var csvLine = CSVFormatter.FormatLine(new List<string>
-            {
+            var csvLine = CSVFormatter.FormatLine(
+            [
                 "Flaw ID",
                 "CWE ID",
                 "Category Name",
@@ -89,7 +88,7 @@ namespace Dipsy.VeracodeReport.Converter
                 "Mitigation Status",
                 "Mitigation Status Description",
                 "Mitigation Text"
-            });
+            ]);
 
             outFile.WriteLine(csvLine);
         }
@@ -101,8 +100,7 @@ namespace Dipsy.VeracodeReport.Converter
             var severity = SeverityStringFromNum(flaw.severity);
 
             var csvLine = CSVFormatter.FormatLine(
-                new List<string>
-                    {
+                [
                         flaw.issueid,
                         flaw.cweid,
                         flaw.categoryname,
@@ -128,7 +126,7 @@ namespace Dipsy.VeracodeReport.Converter
                         flaw.mitigation_status,
                         flaw.mitigation_status_desc,
                         mitigations
-                    });
+                    ]);
 
             outFile.WriteLine(csvLine);
         }

@@ -28,10 +28,10 @@ namespace Dipsy.VeracodeReport.Converter
 
         private static string ProcessValueForSpecialCharacters(string value)
         {
-            if (value.Contains(",") || 
-                value.Contains("\r") || 
-                value.Contains("\n") || 
-                value.Contains("\""))
+            if (value.Contains(',') || 
+                value.Contains('\r') || 
+                value.Contains('\n') || 
+                value.Contains('\"'))
             {
                 value = value.Replace("\"", "\"\"");
                 value = string.Concat("\"", value, "\"");
